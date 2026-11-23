@@ -39,7 +39,6 @@ def miller_rabin(n, k=20):
     return True
 
 
-## I now need to generate two primes p and q, and then compute n = p * q. Also need φ(n) = (p-1)(q-1). Also e such that 1 < e < φ(n) and gcd(e, φ(n)) = 1. Finally d such that d ≡ e^(-1) (mod φ(n)).
 
 def prime_generation(key_size):
     total = 0
@@ -79,18 +78,16 @@ def generate_keys(key_size):
     q = prime_generation(key_size)
     n = p * q
     phi = (p - 1) * (q - 1)
-
     e = 65537
     if gcd(e, phi) != 1:
         raise ValueError("e and φ(n) are not coprime.")
-
     d = mod_inverse(e, phi)
 
     return (e, d, n)
 
 # print(generate_keys(256))
 
-
+# these two are just temp for testing messages, will change to blocks soon
 def message_to_int(message):
     content = int.from_bytes(message.encode('utf-8'), 'big')
     return content
@@ -99,17 +96,17 @@ def int_to_message(content):
     message = content.to_bytes((content.bit_length() + 7) // 8, 'big').decode('utf-8')
     return message
 
-
+#encrypt and decrypt fuctions
 def encrypt(message, e, n):
     cyphertext = square_and_multiply(message, e, n)
     return cyphertext
 
-def decrpyt(cypertext, d, n):
+def decrypt(cypertext, d, n):
     message = square_and_multiply(cypertext, d, n)
     return message
 
 
-
+#sample loop to show how it works 
 def main():
     e, d, n = generate_keys(256)
     print(f"Public key: (e={e}, n={n})")
@@ -118,7 +115,7 @@ def main():
     print(int_message)
     cyphertext = encrypt(int_message, e, n)
     print(f"Encrypted message: {cyphertext}")
-    message_int = decrpyt(cyphertext, d, n)
+    message_int = decrypt(cyphertext, d, n)
     print(f"Decrypted message: {message_int}")
     message = int_to_message(message_int)
     print(message)
