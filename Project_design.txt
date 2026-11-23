@@ -1,0 +1,30 @@
+Sending a message flow 
+
+- Get user's 
+    - text 
+    - mode selection 
+    - recipient 
+        - get their public key's (n,e)
+
+- generate 
+    - p and q ( can do this at start up)
+    - N 
+        - p * q
+    - O 
+        - (p-1)(q-1)
+    - random E 
+        - such that 1 < e < O and gcd e,O = 1
+            - prime or extended 
+    - d 
+        - such that 1 < d < 0 and e * d is congruent 1 mod O 
+
+- encrypt 
+    - convert message to a binary number 
+    - (number)^ E mod N
+
+- Mode selection 
+    - output Feedback mode
+        -
+        
+    Cipher Feedback Mode
+        -
